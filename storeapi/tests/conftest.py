@@ -1,4 +1,4 @@
-from typing import AsyncGenerator, Generator
+from typing import AsyncGenerator
 import pytest
 #from fastapi.testclient import TestClient
 from httpx import AsyncClient,ASGITransport
