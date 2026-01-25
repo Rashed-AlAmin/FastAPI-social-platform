@@ -1,5 +1,12 @@
 import pytest 
-from storeapi.security import get_user
+from storeapi.security import get_user,verify_password,get_password_hash
+
+@pytest.mark.anyio
+async def test_password_hashes():
+    password="password"
+    hashed=get_password_hash(password)
+    assert verify_password(password,hashed)
+
 
 @pytest.mark.anyio 
 async def test_get_user(registered_user:dict):

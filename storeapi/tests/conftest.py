@@ -5,6 +5,7 @@ import pytest
 from httpx import AsyncClient,ASGITransport
 
 os.environ["ENV_STATE"]="test"
+
 from storeapi.database import database,user_table #noqa:E402
 from storeapi.main import app  #noqa:E402
 
@@ -19,8 +20,13 @@ def anyio_backend():
 @pytest.fixture(autouse=True)
 async def db()->AsyncGenerator:
     await database.connect()
+    if os.environ.get("ENV_STATE") == "test":
+        await database.execute("DELETE FROM comments")
+        await database.execute("DELETE FROM posts")
+        await database.execute("DELETE FROM users")
     yield
     await database.disconnect()
+
 @pytest.fixture()
 async def async_client()->AsyncGenerator:
     async with AsyncClient(transport=ASGITransport(app=app),
@@ -35,3 +41,6 @@ async def registered_user(async_client:AsyncClient)->dict:
     user=await database.fetch_one(query)
     user_details["id"]=user.id
     return user_details
+
+    
+
