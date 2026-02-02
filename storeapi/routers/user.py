@@ -1,7 +1,7 @@
 import logging
 from fastapi import APIRouter, HTTPException, status
 from storeapi.models.user import UserIn
-from storeapi.security import get_user,get_password_hash
+from storeapi.security import get_user,get_password_hash,authenticate_user,create_access_token
 from storeapi.database import database, user_table
 
 logger=logging.getLogger(__name__)
@@ -21,3 +21,12 @@ async def register(user:UserIn):
 
     await database.execute(query)
     return {"detail":"user created"}
+
+
+@router.post("/token")
+async def login(user:UserIn):
+    user=await authenticate_user(user.email,user.password)
+    access_token=create_access_token(user.email)
+    return {"access_token":access_token,"token_type":"bearer"}
+
+
