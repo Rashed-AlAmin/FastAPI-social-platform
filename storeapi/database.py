@@ -9,7 +9,8 @@ post_table=sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id",sqlalchemy.Integer,primary_key=True),
     sqlalchemy.Column("body",sqlalchemy.String),
-    sqlalchemy.Column("user_id",sqlalchemy.ForeignKey("users.id"),nullable=False)
+    sqlalchemy.Column("user_id",sqlalchemy.ForeignKey("users.id"),nullable=False),
+    sqlalchemy.Column("image_url",sqlalchemy.String)
 )
 
 user_table=sqlalchemy.Table(
@@ -17,8 +18,8 @@ user_table=sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id",sqlalchemy.Integer,primary_key=True),
     sqlalchemy.Column("email",sqlalchemy.String,unique=True),
-    sqlalchemy.Column("password",sqlalchemy.String)
-
+    sqlalchemy.Column("password",sqlalchemy.String),
+    sqlalchemy.Column("confirmed",sqlalchemy.Boolean,default=False)
 )
 
 comment_table=sqlalchemy.Table(
