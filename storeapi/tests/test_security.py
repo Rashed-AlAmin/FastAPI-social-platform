@@ -88,7 +88,7 @@ async def test_get_subject_for_token_type_wrong_type():
     token=security.create_confirmation_token(email)
     with pytest.raises(security.HTTPException) as exc_info:
         security.get_subject_for_token_type(token,"access")
-    assert "token has incorrect type,expected access"
+    assert "token has incorrect type,expected access"==exc_info.value.detail
 
 
 @pytest.mark.anyio

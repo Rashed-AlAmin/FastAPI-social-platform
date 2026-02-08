@@ -40,7 +40,7 @@ def configure_logging()->None:
                 "console":{
                     "class":"logging.Formatter",
                     "datefmt":"%Y-%m-%dT%H:%M:%S",
-                    "format":"(%(correlation_id)s) %(name)s:%(lineno)d-%(message)s"
+                    "format":"(%(correlation_id)s) %(name)s:%(lineno)d-%(message)s" #noqa:E501
                 },
                 "file":{
                     "class":"pythonjsonlogger.jsonlogger.JsonFormatter",
