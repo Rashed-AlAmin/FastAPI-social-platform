@@ -34,3 +34,7 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+      env:
+        ENV_STATE: test
+        SECRET_KEY: test-secret-key
+        ALGORITHM: HS256
