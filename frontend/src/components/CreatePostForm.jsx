@@ -16,7 +16,7 @@ export default function CreatePostForm({ onPostCreated }) {
     try {
       await postsAPI.create(body);
       setBody('');
-      onPostCreated(); // Refresh the feed
+      onPostCreated();
     } catch (err) {
       setError('Failed to create post');
     } finally {
@@ -25,24 +25,27 @@ export default function CreatePostForm({ onPostCreated }) {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow mb-6">
+    <div className="bg-white p-6 rounded-xl shadow-md mb-6 border border-gray-100">
       <form onSubmit={handleSubmit}>
         <textarea
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition"
           rows="3"
-          placeholder="What's on your mind?"
+          placeholder="What's on your mind? 💭"
           value={body}
           onChange={(e) => setBody(e.target.value)}
           disabled={loading}
         />
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        <div className="mt-3 flex justify-end">
+        <div className="mt-4 flex justify-between items-center">
+          <p className="text-sm text-gray-500">
+            {body.length > 0 && `${body.length} characters`}
+          </p>
           <button
             type="submit"
             disabled={loading || !body.trim()}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-2.5 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition shadow-md hover:shadow-lg"
           >
-            {loading ? 'Posting...' : 'Post'}
+            {loading ? 'Posting...' : '✨ Post'}
           </button>
         </div>
       </form>

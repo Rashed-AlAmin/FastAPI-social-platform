@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { postsAPI } from '../services/api';
 import Navbar from '../components/Navbar';
 import CreatePostForm from '../components/CreatePostForm';
 import PostCard from '../components/PostCard';
+import { AuthContext } from '../context/AuthContext';
 
 export default function Feed() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sorting, setSorting] = useState('new');
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     fetchPosts();
@@ -26,59 +28,70 @@ export default function Feed() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-      
-      <div className="max-w-2xl mx-auto p-4">
-        <CreatePostForm onPostCreated={fetchPosts} />
+  <div style={{ 
+    minHeight: '100vh', 
+    background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
+  }}>
+    <Navbar />
 
-        <div className="mb-4 flex gap-2">
-          <button
-            onClick={() => setSorting('new')}
-            className={`px-4 py-2 rounded ${
-              sorting === 'new'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            New
-          </button>
-          <button
-            onClick={() => setSorting('old')}
-            className={`px-4 py-2 rounded ${
-              sorting === 'old'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            Old
-          </button>
-          <button
-            onClick={() => setSorting('most_likes')}
-            className={`px-4 py-2 rounded ${
-              sorting === 'most_likes'
-                ? 'bg-blue-600 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            Most Liked
-          </button>
-        </div>
+    <div className="max-w-2xl mx-auto p-6">
+      <CreatePostForm onPostCreated={fetchPosts} />
 
-        {loading ? (
-          <div className="text-center py-8">
-            <p className="text-gray-600">Loading posts...</p>
-          </div>
-        ) : posts.length === 0 ? (
-          <div className="bg-white p-8 rounded-lg shadow text-center">
-            <p className="text-gray-600">No posts yet. Be the first to post!</p>
-          </div>
-        ) : (
-          posts.map((post) => (
-            <PostCard key={post.id} post={post} onLike={fetchPosts} />
-          ))
-        )}
+      <div className="mb-6 flex gap-2 bg-white p-2 rounded-xl shadow-md">
+        <button
+          onClick={() => setSorting('new')}
+          className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition ${
+            sorting === 'new'
+              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
+              : 'text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          🆕 New
+        </button>
+        <button
+          onClick={() => setSorting('old')}
+          className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition ${
+            sorting === 'old'
+              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
+              : 'text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          📅 Old
+        </button>
+        <button
+          onClick={() => setSorting('most_likes')}
+          className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition ${
+            sorting === 'most_likes'
+              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
+              : 'text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          🔥 Popular
+        </button>
       </div>
+
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-600 border-t-transparent"></div>
+          <p className="text-gray-700 mt-4">Loading posts...</p>
+        </div>
+      ) : posts.length === 0 ? (
+        <div className="bg-white p-12 rounded-xl shadow-md text-center">
+          <div className="text-6xl mb-4">📝</div>
+          <p className="text-gray-600 text-lg">No posts yet. Be the first to share!</p>
+        </div>
+      ) : (
+        posts.map((post) => (
+          <PostCard
+            key={post.id}
+            post={post}
+            onLike={fetchPosts}
+            onDelete={fetchPosts}
+            currentUserId={user?.id}
+          />
+        ))
+      )}
     </div>
-  );
+  </div>
+);
 }

@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { authAPI } from '../services/api';
+import axios from 'axios';
 
 export const AuthContext = createContext();
 
@@ -10,16 +11,31 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      setUser({ token });
+      fetchUserInfo(token);
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
+
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await axios.get('http://localhost:8000/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUser({ ...response.data, token });
+    } catch (err) {
+      console.error('Failed to fetch user info');
+      localStorage.removeItem('token');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (email, password) => {
     const response = await authAPI.login(email, password);
     const token = response.data.access_token;
     localStorage.setItem('token', token);
-    setUser({ token, email });
+    await fetchUserInfo(token);
     return response;
   };
 

@@ -2,7 +2,7 @@ import logging
 from fastapi import APIRouter, HTTPException, status, Request, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from storeapi.models.user import UserIn
-from typing import Optional
+from typing import Optional,Annotated
 from storeapi.security import (
     get_user,
     get_password_hash,
@@ -10,8 +10,10 @@ from storeapi.security import (
     create_access_token,
     create_confirmation_token,
     get_subject_for_token_type,
+    get_current_user
 )
 from storeapi.database import database, user_table
+from storeapi.models.user import User
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -75,3 +77,17 @@ async def confirm_email(token: str):
     logger.debug(query)
     await database.execute(query)
     return {"detail": "User confirmed"}
+
+
+
+
+@router.get("/me")
+async def get_current_user_info(current_user: Annotated[User, Depends(get_current_user)]):
+    # Fetch full user info
+    query = user_table.select().where(user_table.c.email == current_user.email)
+    user_data = await database.fetch_one(query)
+    return {
+        "id": user_data.id,
+        "email": user_data.email,
+        "username": user_data.username,
+    }

@@ -35,6 +35,9 @@ export const postsAPI = {
   getOne: (id) => api.get(`/post/${id}`),
   create: (body) => api.post('/post', { body }),
   like: (post_id) => api.post('/like', { post_id }),
+  delete: (post_id) => api.delete(`/post/${post_id}`),
+  update: (post_id, body) => api.put(`/post/${post_id}`, { body }),
+  getUserPosts: (user_id) => api.get(`/user/${user_id}/posts`),
 };
 
 export const commentsAPI = {

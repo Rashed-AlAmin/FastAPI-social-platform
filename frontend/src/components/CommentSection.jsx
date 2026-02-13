@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { commentsAPI } from '../services/api';
+import { timeAgo } from '../utils/timeAgo';
 
 export default function CommentSection({ postId }) {
   const [comments, setComments] = useState([]);
@@ -40,15 +41,17 @@ export default function CommentSection({ postId }) {
   };
 
   return (
-    <div className="mt-6">
-      <h3 className="text-lg font-semibold mb-4">Comments ({comments.length})</h3>
+    <div className="mt-8">
+      <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+        <span>💬</span>
+        Comments ({comments.length})
+      </h3>
 
-      {/* Comment Form */}
       <form onSubmit={handleSubmit} className="mb-6">
         <textarea
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition"
           rows="2"
-          placeholder="Write a comment..."
+          placeholder="Write a comment... 💭"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           disabled={submitting}
@@ -56,29 +59,35 @@ export default function CommentSection({ postId }) {
         <button
           type="submit"
           disabled={submitting || !newComment.trim()}
-          className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="mt-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2.5 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition shadow-md"
         >
-          {submitting ? 'Posting...' : 'Comment'}
+          {submitting ? 'Posting...' : '✨ Comment'}
         </button>
       </form>
 
-      {/* Comments List */}
       {loading ? (
-        <p className="text-gray-600">Loading comments...</p>
+        <div className="text-center py-8">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent"></div>
+        </div>
       ) : comments.length === 0 ? (
-        <p className="text-gray-500 text-center py-4">No comments yet. Be the first!</p>
+        <div className="text-center py-12 bg-gray-50 rounded-xl">
+          <div className="text-5xl mb-3">💬</div>
+          <p className="text-gray-500">No comments yet. Be the first!</p>
+        </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {comments.map((comment) => (
-            <div key={comment.id} className="bg-gray-50 p-3 rounded-lg">
-              <div className="flex items-center gap-2 mb-1">
-                <p className="text-sm font-semibold text-blue-600">@{comment.username}</p>
-                <span className="text-gray-400 text-xs">•</span>
-                <p className="text-xs text-gray-500">
-                  {new Date(comment.created_at).toLocaleDateString()}
-                </p>
+            <div key={comment.id} className="bg-gray-50 p-4 rounded-xl hover:bg-gray-100 transition">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  {comment.username[0].toUpperCase()}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">@{comment.username}</p>
+                  <p className="text-xs text-gray-500">{timeAgo(comment.created_at)}</p>
+                </div>
               </div>
-              <p className="text-gray-800">{comment.body}</p>
+              <p className="text-gray-800 ml-10">{comment.body}</p>
             </div>
           ))}
         </div>
