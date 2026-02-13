@@ -15,8 +15,19 @@ api.interceptors.request.use((config) => {
 });
 
 export const authAPI = {
-  register: (email, password) => api.post('/register', { email, password }),
-  login: (email, password) => api.post('/token', { email, password }),
+  register: (email, username, password) => 
+    api.post('/register', { email, username, password }),
+  login: (email, password) => {
+    const formData = new URLSearchParams();
+    formData.append('username', email);
+    formData.append('password', password);
+    
+    return api.post('/token', formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+  },
 };
 
 export const postsAPI = {

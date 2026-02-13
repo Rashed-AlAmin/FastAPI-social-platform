@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 
 export default function Register() {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -22,7 +23,7 @@ export default function Register() {
     }
 
     try {
-      await register(email, password);
+      await register(email, username, password);
       setSuccess('Registration successful! Please login.');
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
@@ -55,6 +56,17 @@ export default function Register() {
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Username</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>

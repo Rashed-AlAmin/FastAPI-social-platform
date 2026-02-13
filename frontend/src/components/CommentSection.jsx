@@ -30,9 +30,10 @@ export default function CommentSection({ postId }) {
     try {
       await commentsAPI.create(newComment, postId);
       setNewComment('');
-      fetchComments(); // Refresh comments
+      fetchComments();
     } catch (err) {
-      console.error('Failed to post comment');
+      console.error('Failed to post comment:', err);
+      alert('Failed to post comment');
     } finally {
       setSubmitting(false);
     }
@@ -70,7 +71,13 @@ export default function CommentSection({ postId }) {
         <div className="space-y-3">
           {comments.map((comment) => (
             <div key={comment.id} className="bg-gray-50 p-3 rounded-lg">
-              <p className="text-sm text-gray-500 mb-1">User #{comment.user_id}</p>
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-sm font-semibold text-blue-600">@{comment.username}</p>
+                <span className="text-gray-400 text-xs">•</span>
+                <p className="text-xs text-gray-500">
+                  {new Date(comment.created_at).toLocaleDateString()}
+                </p>
+              </div>
               <p className="text-gray-800">{comment.body}</p>
             </div>
           ))}
