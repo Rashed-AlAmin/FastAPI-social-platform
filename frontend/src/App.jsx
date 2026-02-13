@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Feed from './pages/Feed';
+import PostDetail from './pages/PostDetail';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/post/:id" element={<PostDetail />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
