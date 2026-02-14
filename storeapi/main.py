@@ -29,7 +29,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://*.vercel.app",  # Allow all Vercel deployments
+        "https://fast-api-social-platform.vercel.app",  # Your exact Vercel URL
+        "https://*.vercel.app",  # Also keep wildcard for preview deployments
     ],
     allow_credentials=True,
     allow_methods=["*"],
