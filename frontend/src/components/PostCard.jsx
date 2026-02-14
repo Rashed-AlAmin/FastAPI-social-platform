@@ -1,7 +1,6 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { postsAPI } from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
 import { timeAgo } from '../utils/timeAgo';
 
 export default function PostCard({ post, onLike, onDelete, currentUserId }) {
@@ -28,7 +27,7 @@ export default function PostCard({ post, onLike, onDelete, currentUserId }) {
 
   const handleDelete = async (e) => {
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to delete this post?')) {
+    if (window.confirm('Delete this post?')) {
       try {
         await postsAPI.delete(post.id);
         onDelete();
@@ -74,30 +73,76 @@ export default function PostCard({ post, onLike, onDelete, currentUserId }) {
   return (
     <div
       onClick={handleCardClick}
-      className="bg-white p-5 rounded-xl shadow-md mb-4 hover:shadow-xl transition-all duration-200 border border-gray-100 cursor-pointer"
+      style={{
+        background: 'white',
+        padding: '16px',
+        borderRadius: '12px',
+        marginBottom: '16px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        cursor: isEditing ? 'default' : 'pointer',
+        transition: 'box-shadow 0.2s'
+      }}
+      onMouseEnter={(e) => {
+        if (!isEditing) e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+      }}
     >
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-            {post.username[0].toUpperCase()}
-          </div>
-          <div>
-            <p className="font-semibold text-gray-800">@{post.username}</p>
-            <p className="text-xs text-gray-500">{timeAgo(post.created_at)}</p>
-          </div>
+      {/* Header */}
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        marginBottom: '12px'
+      }}>
+        <div>
+          <p style={{
+            fontWeight: '600',
+            color: '#1f2937',
+            margin: '0 0 4px 0',
+            fontSize: '15px'
+          }}>
+            @{post.username}
+          </p>
+          <p style={{
+            fontSize: '12px',
+            color: '#9ca3af',
+            margin: 0
+          }}>
+            {timeAgo(post.created_at)}
+          </p>
         </div>
 
         {isOwnPost && !isEditing && (
-          <div className="flex gap-2">
+          <div style={{ display: 'flex', gap: '8px' }}>
             <button
               onClick={handleEdit}
-              className="text-blue-600 hover:bg-blue-50 px-3 py-1 rounded-lg text-sm font-medium transition"
+              style={{
+                padding: '6px 12px',
+                fontSize: '12px',
+                color: '#3b82f6',
+                background: '#eff6ff',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontWeight: '500'
+              }}
             >
               ✏️ Edit
             </button>
             <button
               onClick={handleDelete}
-              className="text-red-600 hover:bg-red-50 px-3 py-1 rounded-lg text-sm font-medium transition"
+              style={{
+                padding: '6px 12px',
+                fontSize: '12px',
+                color: '#ef4444',
+                background: '#fef2f2',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontWeight: '500'
+              }}
             >
               🗑️ Delete
             </button>
@@ -105,53 +150,115 @@ export default function PostCard({ post, onLike, onDelete, currentUserId }) {
         )}
       </div>
 
+      {/* Body */}
       {isEditing ? (
-        <div onClick={(e) => e.stopPropagation()} className="space-y-3">
+        <div onClick={(e) => e.stopPropagation()} style={{ marginBottom: '12px' }}>
           <textarea
-            className="w-full p-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            rows="3"
             value={editedBody}
             onChange={(e) => setEditedBody(e.target.value)}
+            style={{
+              width: '100%',
+              minHeight: '60px',
+              padding: '10px',
+              fontSize: '14px',
+              border: '2px solid #3b82f6',
+              borderRadius: '6px',
+              resize: 'vertical',
+              outline: 'none',
+              fontFamily: 'inherit',
+              boxSizing: 'border-box'
+            }}
           />
-          <div className="flex gap-2">
+          <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
             <button
               onClick={handleUpdate}
               disabled={updating || !editedBody.trim()}
-              className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 text-sm font-medium transition"
+              style={{
+                padding: '8px 16px',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: 'white',
+                background: updating || !editedBody.trim() ? '#9ca3af' : '#3b82f6',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: updating || !editedBody.trim() ? 'not-allowed' : 'pointer'
+              }}
             >
               {updating ? 'Saving...' : '💾 Save'}
             </button>
             <button
               onClick={handleCancelEdit}
-              className="bg-gray-200 text-gray-700 px-5 py-2 rounded-lg hover:bg-gray-300 text-sm font-medium transition"
+              style={{
+                padding: '8px 16px',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: '#6b7280',
+                background: '#f3f4f6',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer'
+              }}
             >
               ✖️ Cancel
             </button>
           </div>
         </div>
       ) : (
-        <p className="text-gray-800 mb-4 leading-relaxed">{post.body}</p>
+        <p style={{
+          color: '#374151',
+          fontSize: '15px',
+          lineHeight: '1.6',
+          margin: '0 0 12px 0'
+        }}>
+          {post.body}
+        </p>
       )}
 
+      {/* Image */}
       {post.image_url && (
-        <img src={post.image_url} alt="Post" className="w-full rounded-lg mb-4" />
+        <img
+          src={post.image_url}
+          alt="Post"
+          style={{
+            width: '100%',
+            borderRadius: '8px',
+            marginBottom: '12px'
+          }}
+        />
       )}
 
-      <div className="flex items-center gap-6 pt-3 border-t border-gray-100">
+      {/* Footer */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        paddingTop: '12px',
+        borderTop: '1px solid #f3f4f6'
+      }}>
         <button
           onClick={handleLike}
           disabled={liking}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition ${
-            liking ? 'opacity-50' : 'hover:bg-red-50'
-          }`}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '6px 12px',
+            fontSize: '13px',
+            color: '#6b7280',
+            background: 'transparent',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: liking ? 'not-allowed' : 'pointer',
+            fontWeight: '500',
+            transition: 'background 0.2s'
+          }}
+          onMouseEnter={(e) => e.target.style.background = '#fef2f2'}
+          onMouseLeave={(e) => e.target.style.background = 'transparent'}
         >
-          <span className="text-xl">❤️</span>
-          <span className="text-sm font-medium text-gray-700">{post.likes || 0}</span>
+          <span style={{ fontSize: '16px' }}>❤️</span>
+          <span>{post.likes || 0}</span>
         </button>
-        <div className="flex items-center gap-2 text-gray-500 text-sm">
-          <span>💬</span>
-          <span>Click to comment</span>
-        </div>
+        <span style={{ fontSize: '13px', color: '#9ca3af' }}>💬 Click to comment</span>
       </div>
     </div>
   );

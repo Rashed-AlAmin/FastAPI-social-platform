@@ -28,70 +28,126 @@ export default function Feed() {
   };
 
   return (
-  <div style={{ 
-    minHeight: '100vh', 
-    background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
-  }}>
-    <Navbar />
+    <div style={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
+    }}>
+      <Navbar />
 
-    <div className="max-w-2xl mx-auto p-6">
-      <CreatePostForm onPostCreated={fetchPosts} />
+      <div style={{ 
+        maxWidth: '700px', 
+        margin: '0 auto', 
+        padding: '24px 16px' 
+      }}>
+        {/* Create Post Section */}
+        <CreatePostForm onPostCreated={fetchPosts} />
 
-      <div className="mb-6 flex gap-2 bg-white p-2 rounded-xl shadow-md">
-        <button
-          onClick={() => setSorting('new')}
-          className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition ${
-            sorting === 'new'
-              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          🆕 New
-        </button>
-        <button
-          onClick={() => setSorting('old')}
-          className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition ${
-            sorting === 'old'
-              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          📅 Old
-        </button>
-        <button
-          onClick={() => setSorting('most_likes')}
-          className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition ${
-            sorting === 'most_likes'
-              ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-md'
-              : 'text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          🔥 Popular
-        </button>
+        {/* Sorting Buttons */}
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          marginBottom: '24px',
+          background: 'white',
+          padding: '8px',
+          borderRadius: '12px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        }}>
+          <button
+            onClick={() => setSorting('new')}
+            style={{
+              flex: 1,
+              padding: '10px',
+              fontSize: '14px',
+              fontWeight: '600',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              backgroundColor: sorting === 'new' ? '#3b82f6' : 'transparent',
+              color: sorting === 'new' ? 'white' : '#4b5563'
+            }}
+          >
+            🆕 New
+          </button>
+          <button
+            onClick={() => setSorting('old')}
+            style={{
+              flex: 1,
+              padding: '10px',
+              fontSize: '14px',
+              fontWeight: '600',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              backgroundColor: sorting === 'old' ? '#3b82f6' : 'transparent',
+              color: sorting === 'old' ? 'white' : '#4b5563'
+            }}
+          >
+            📅 Old
+          </button>
+          <button
+            onClick={() => setSorting('most_likes')}
+            style={{
+              flex: 1,
+              padding: '10px',
+              fontSize: '14px',
+              fontWeight: '600',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              backgroundColor: sorting === 'most_likes' ? '#3b82f6' : 'transparent',
+              color: sorting === 'most_likes' ? 'white' : '#4b5563'
+            }}
+          >
+            🔥 Popular
+          </button>
+        </div>
+
+        {/* Posts */}
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '40px 0' }}>
+            <div style={{
+              display: 'inline-block',
+              width: '40px',
+              height: '40px',
+              border: '4px solid #e5e7eb',
+              borderTop: '4px solid #3b82f6',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }}></div>
+            <p style={{ color: '#4b5563', marginTop: '16px', fontSize: '14px' }}>Loading posts...</p>
+            <style>{`
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            `}</style>
+          </div>
+        ) : posts.length === 0 ? (
+          <div style={{
+            background: 'white',
+            padding: '48px 24px',
+            borderRadius: '12px',
+            textAlign: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📝</div>
+            <p style={{ color: '#6b7280', fontSize: '16px' }}>No posts yet. Be the first to share!</p>
+          </div>
+        ) : (
+          posts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              onLike={fetchPosts}
+              onDelete={fetchPosts}
+              currentUserId={user?.id}
+            />
+          ))
+        )}
       </div>
-
-      {loading ? (
-        <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-purple-600 border-t-transparent"></div>
-          <p className="text-gray-700 mt-4">Loading posts...</p>
-        </div>
-      ) : posts.length === 0 ? (
-        <div className="bg-white p-12 rounded-xl shadow-md text-center">
-          <div className="text-6xl mb-4">📝</div>
-          <p className="text-gray-600 text-lg">No posts yet. Be the first to share!</p>
-        </div>
-      ) : (
-        posts.map((post) => (
-          <PostCard
-            key={post.id}
-            post={post}
-            onLike={fetchPosts}
-            onDelete={fetchPosts}
-            currentUserId={user?.id}
-          />
-        ))
-      )}
     </div>
-  </div>
-);
+  );
 }

@@ -37,11 +37,33 @@ export default function PostDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div style={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)' 
+      }}>
         <Navbar />
-        <div className="max-w-2xl mx-auto p-6 text-center py-20">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
-          <p className="text-gray-600 mt-4">Loading...</p>
+        <div style={{ 
+          maxWidth: '700px', 
+          margin: '0 auto', 
+          padding: '40px 16px',
+          textAlign: 'center' 
+        }}>
+          <div style={{
+            display: 'inline-block',
+            width: '40px',
+            height: '40px',
+            border: '4px solid #e5e7eb',
+            borderTop: '4px solid #3b82f6',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }}></div>
+          <p style={{ color: '#4b5563', marginTop: '16px', fontSize: '14px' }}>Loading...</p>
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
         </div>
       </div>
     );
@@ -49,11 +71,19 @@ export default function PostDetail() {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div style={{ 
+        minHeight: '100vh', 
+        background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)' 
+      }}>
         <Navbar />
-        <div className="max-w-2xl mx-auto p-6 text-center py-20">
-          <div className="text-6xl mb-4">😕</div>
-          <p className="text-gray-600">Post not found</p>
+        <div style={{ 
+          maxWidth: '700px', 
+          margin: '0 auto', 
+          padding: '40px 16px',
+          textAlign: 'center' 
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>😕</div>
+          <p style={{ color: '#6b7280', fontSize: '16px' }}>Post not found</p>
         </div>
       </div>
     );
@@ -62,47 +92,126 @@ export default function PostDetail() {
   return (
     <div style={{ 
       minHeight: '100vh', 
-      background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
+      background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)' 
     }}>
       <Navbar />
 
-      <div className="max-w-2xl mx-auto p-6">
+      <div style={{ 
+        maxWidth: '700px', 
+        margin: '0 auto', 
+        padding: '24px 16px' 
+      }}>
+        {/* Back Button */}
         <button
           onClick={() => navigate('/feed')}
-          className="mb-6 flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium transition"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 16px',
+            marginBottom: '16px',
+            fontSize: '14px',
+            fontWeight: '600',
+            color: '#3b82f6',
+            background: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+            transition: 'all 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = '#eff6ff';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = 'white';
+          }}
         >
-          <span>←</span> Back to Feed
+          ← Back to Feed
         </button>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-              {post.username[0].toUpperCase()}
-            </div>
-            <div>
-              <p className="font-bold text-gray-800">@{post.username}</p>
-              <p className="text-sm text-gray-500">{timeAgo(post.created_at)}</p>
-            </div>
+        {/* Post Card */}
+        <div style={{
+          background: 'white',
+          padding: '20px',
+          borderRadius: '12px',
+          marginBottom: '20px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        }}>
+          {/* Post Header */}
+          <div style={{ marginBottom: '16px' }}>
+            <p style={{
+              fontWeight: '600',
+              color: '#1f2937',
+              margin: '0 0 6px 0',
+              fontSize: '16px'
+            }}>
+              @{post.username}
+            </p>
+            <p style={{
+              fontSize: '13px',
+              color: '#9ca3af',
+              margin: 0
+            }}>
+              {timeAgo(post.created_at)}
+            </p>
           </div>
 
-          <p className="text-gray-800 text-lg mb-4 leading-relaxed">{post.body}</p>
+          {/* Post Body */}
+          <p style={{
+            color: '#374151',
+            fontSize: '16px',
+            lineHeight: '1.6',
+            margin: '0 0 16px 0'
+          }}>
+            {post.body}
+          </p>
 
+          {/* Post Image */}
           {post.image_url && (
-            <img src={post.image_url} alt="Post" className="w-full rounded-lg mb-4" />
+            <img
+              src={post.image_url}
+              alt="Post"
+              style={{
+                width: '100%',
+                borderRadius: '8px',
+                marginBottom: '16px'
+              }}
+            />
           )}
 
-          <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
+          {/* Like Button */}
+          <div style={{
+            paddingTop: '16px',
+            borderTop: '1px solid #f3f4f6'
+          }}>
             <button
               onClick={handleLike}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-red-50 transition"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#6b7280',
+                background: 'transparent',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'background 0.2s'
+              }}
+              onMouseEnter={(e) => e.target.style.background = '#fef2f2'}
+              onMouseLeave={(e) => e.target.style.background = 'transparent'}
             >
-              <span className="text-2xl">❤️</span>
-              <span className="font-semibold text-gray-700">{post.likes || 0}</span>
+              <span style={{ fontSize: '18px' }}>❤️</span>
+              <span>{post.likes || 0} likes</span>
             </button>
           </div>
-
-          <CommentSection postId={post.id} />
         </div>
+
+        {/* Comments Section */}
+        <CommentSection postId={post.id} />
       </div>
     </div>
   );

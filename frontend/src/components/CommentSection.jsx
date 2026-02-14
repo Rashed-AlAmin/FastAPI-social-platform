@@ -41,53 +41,143 @@ export default function CommentSection({ postId }) {
   };
 
   return (
-    <div className="mt-8">
-      <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+    <div style={{
+      background: 'white',
+      padding: '20px',
+      borderRadius: '12px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+    }}>
+      {/* Header */}
+      <h3 style={{
+        fontSize: '18px',
+        fontWeight: '700',
+        color: '#1f2937',
+        margin: '0 0 20px 0',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px'
+      }}>
         <span>💬</span>
         Comments ({comments.length})
       </h3>
 
-      <form onSubmit={handleSubmit} className="mb-6">
+      {/* Comment Form */}
+      <form onSubmit={handleSubmit} style={{ marginBottom: '24px' }}>
         <textarea
-          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition"
-          rows="2"
           placeholder="Write a comment... 💭"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           disabled={submitting}
+          style={{
+            width: '100%',
+            minHeight: '70px',
+            padding: '12px 16px',
+            fontSize: '14px',
+            border: '2px solid #e5e7eb',
+            borderRadius: '8px',
+            resize: 'none',
+            outline: 'none',
+            fontFamily: 'inherit',
+            boxSizing: 'border-box',
+            transition: 'border-color 0.2s'
+          }}
+          onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+          onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
         />
         <button
           type="submit"
           disabled={submitting || !newComment.trim()}
-          className="mt-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2.5 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition shadow-md"
+          style={{
+            marginTop: '10px',
+            padding: '10px 20px',
+            fontSize: '14px',
+            fontWeight: '600',
+            color: 'white',
+            background: submitting || !newComment.trim() ? '#9ca3af' : '#3b82f6',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: submitting || !newComment.trim() ? 'not-allowed' : 'pointer',
+            transition: 'all 0.2s'
+          }}
         >
           {submitting ? 'Posting...' : '✨ Comment'}
         </button>
       </form>
 
+      {/* Comments List */}
       {loading ? (
-        <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent"></div>
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{
+            display: 'inline-block',
+            width: '30px',
+            height: '30px',
+            border: '3px solid #e5e7eb',
+            borderTop: '3px solid #3b82f6',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }}></div>
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
         </div>
       ) : comments.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-xl">
-          <div className="text-5xl mb-3">💬</div>
-          <p className="text-gray-500">No comments yet. Be the first!</p>
+        <div style={{
+          textAlign: 'center',
+          padding: '32px 16px',
+          background: '#f9fafb',
+          borderRadius: '8px'
+        }}>
+          <div style={{ fontSize: '40px', marginBottom: '12px' }}>💬</div>
+          <p style={{ color: '#9ca3af', fontSize: '14px', margin: 0 }}>
+            No comments yet. Be the first!
+          </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {comments.map((comment) => (
-            <div key={comment.id} className="bg-gray-50 p-4 rounded-xl hover:bg-gray-100 transition">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                  {comment.username[0].toUpperCase()}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-800">@{comment.username}</p>
-                  <p className="text-xs text-gray-500">{timeAgo(comment.created_at)}</p>
-                </div>
+            <div
+              key={comment.id}
+              style={{
+                padding: '14px',
+                background: '#f9fafb',
+                borderRadius: '8px',
+                border: '1px solid #f3f4f6'
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '8px'
+              }}>
+                <p style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#1f2937',
+                  margin: 0
+                }}>
+                  @{comment.username}
+                </p>
+                <span style={{ color: '#d1d5db' }}>•</span>
+                <p style={{
+                  fontSize: '12px',
+                  color: '#9ca3af',
+                  margin: 0
+                }}>
+                  {timeAgo(comment.created_at)}
+                </p>
               </div>
-              <p className="text-gray-800 ml-10">{comment.body}</p>
+              <p style={{
+                fontSize: '14px',
+                color: '#374151',
+                lineHeight: '1.5',
+                margin: 0
+              }}>
+                {comment.body}
+              </p>
             </div>
           ))}
         </div>

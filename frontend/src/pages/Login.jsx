@@ -21,64 +21,136 @@ export default function Login() {
     }
   };
 
+  const inputStyle = {
+    width: '100%',
+    padding: '14px 16px',
+    fontSize: '15px',
+    backgroundColor: '#e5e7eb',
+    border: '1px solid #d1d5db',
+    borderRadius: '6px',
+    outline: 'none',
+    boxSizing: 'border-box',
+    transition: 'all 0.2s'
+  };
+
+  const buttonStyle = {
+    padding: '12px 48px',
+    fontSize: '15px',
+    fontWeight: '600',
+    color: 'white',
+    backgroundColor: '#14b8a6',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    boxShadow: '0 2px 8px rgba(20, 184, 166, 0.3)',
+    transition: 'all 0.2s'
+  };
+
+  const linkStyle = {
+    color: '#2563eb',
+    textDecoration: 'none',
+    fontWeight: '500'
+  };
+
   return (
-    <div style={{ 
-     minHeight: '100vh', 
-     display: 'flex',
-     alignItems: 'center',
-     justifyContent: 'center',
-     background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
     }}>
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 border border-gray-100">
-        <div className="text-center mb-6">
-          <div className="text-5xl mb-2">💬</div>
-          <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
-          <p className="text-gray-500 mt-2">Login to SocialHub</p>
+      <div style={{
+        width: '400px',
+        minHeight: '450px',
+        backgroundColor: 'white',
+        borderRadius: '12px',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+        overflow: 'hidden'
+      }}>
+        <div style={{
+          background: 'linear-gradient(to right, #4a5568, #2d3748)',
+          color: 'white',
+          textAlign: 'center',
+          padding: '28px 24px'
+        }}>
+          <h1 style={{
+            fontSize: '36px',
+            fontWeight: '700',
+            margin: '0 0 12px 0',
+            letterSpacing: '1px',
+            fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+          }}>
+            SocialHub
+          </h1>
+          <p style={{
+            fontSize: '18px',
+            fontWeight: '500',
+            margin: '0',
+            opacity: '0.9'
+          }}>
+            User Login
+          </p>
         </div>
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
-            {error}
-          </div>
-        )}
+        <div style={{ padding: '32px' }}>
+          {error && (
+            <div style={{
+              backgroundColor: '#fee2e2',
+              border: '1px solid #ef4444',
+              color: '#991b1b',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '20px',
+              fontSize: '14px'
+            }}>
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">Email</label>
-            <input
-              type="email"
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '20px' }}>
+              <input
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={inputStyle}
+              />
+            </div>
 
-          <div className="mb-6">
-            <label className="block text-gray-700 font-medium mb-2">Password</label>
-            <input
-              type="password"
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+            <div style={{ marginBottom: '28px' }}>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={inputStyle}
+              />
+            </div>
 
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition shadow-lg"
-          >
-            Login
-          </button>
-        </form>
+            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+              <button type="submit" style={buttonStyle}>
+                LOG IN
+              </button>
+            </div>
 
-        <p className="text-center mt-6 text-gray-600">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-blue-600 font-medium hover:underline">
-            Sign up
-          </Link>
-        </p>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: '14px'
+            }}>
+              <Link to="/register" style={linkStyle}>
+                Register
+              </Link>
+              <a href="#" style={linkStyle}>
+                Forgot password?
+              </a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

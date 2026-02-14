@@ -38,7 +38,7 @@ select_post_and_likes = (
         .outerjoin(like_table, post_table.c.id == like_table.c.post_id)
         .outerjoin(user_table, post_table.c.user_id == user_table.c.id)
     )
-    .group_by(post_table.c.id)
+    .group_by(post_table.c.id, user_table.c.username)
 )
 
 async def find_post(post_id: int):

@@ -32,91 +32,241 @@ export default function Register() {
   };
 
   return (
-    <div style={{ 
-     minHeight: '100vh', 
-     display: 'flex',
-     alignItems: 'center',
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
       justifyContent: 'center',
-     background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
+      background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
     }}>
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-96 border border-gray-100">
-        <div className="text-center mb-6">
-          <div className="text-5xl mb-2">✨</div>
-          <h2 className="text-3xl font-bold text-gray-800">Join SocialHub</h2>
-          <p className="text-gray-500 mt-2">Create your account</p>
-        </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
-            {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4">
-            {success}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">Email</label>
-            <input
-              type="email"
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">Username</label>
-            <input
-              type="text"
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2">Password</label>
-            <input
-              type="password"
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="block text-gray-700 font-medium mb-2">Confirm Password</label>
-            <input
-              type="password"
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition shadow-lg"
-          >
-            Create Account
-          </button>
-        </form>
-
-        <p className="text-center mt-6 text-gray-600">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-600 font-medium hover:underline">
-            Login
-          </Link>
+      {/* Register Card */}
+      <div style={{
+        width: '400px',
+        minHeight: '520px',
+        backgroundColor: 'white',
+        borderRadius: '12px',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+        overflow: 'hidden'
+      }}>
+        {/* Header */}
+        <div style={{
+          background: 'linear-gradient(to right, #4a5568, #2d3748)',
+           color: 'white',
+           textAlign: 'center',
+           padding: '28px 24px'
+      }}>
+       <h1 style={{
+       fontSize: '36px',
+       fontWeight: '700',
+       margin: '0 0 12px 0',
+       letterSpacing: '1px',
+       fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif'
+       }}>
+      SocialHub
+        </h1>
+        <p style={{
+          fontSize: '18px',
+          fontWeight: '500',
+          margin: '0',
+          opacity: '0.9'
+        }}>
+          Create Account
         </p>
+      </div>
+
+        {/* Form Container */}
+        <div style={{ padding: '32px' }}>
+          {error && (
+            <div style={{
+              backgroundColor: '#fee2e2',
+              border: '1px solid #ef4444',
+              color: '#991b1b',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '16px',
+              fontSize: '14px'
+            }}>
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div style={{
+              backgroundColor: '#d1fae5',
+              border: '1px solid #10b981',
+              color: '#065f46',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '16px',
+              fontSize: '14px'
+            }}>
+              {success}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '16px' }}>
+              <input
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  fontSize: '15px',
+                  backgroundColor: '#e5e7eb',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  transition: 'all 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#f9fafb';
+                  e.target.style.borderColor = '#3b82f6';
+                }}
+                onBlur={(e) => {
+                  e.target.style.backgroundColor = '#e5e7eb';
+                  e.target.style.borderColor = '#d1d5db';
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  fontSize: '15px',
+                  backgroundColor: '#e5e7eb',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  transition: 'all 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#f9fafb';
+                  e.target.style.borderColor = '#3b82f6';
+                }}
+                onBlur={(e) => {
+                  e.target.style.backgroundColor = '#e5e7eb';
+                  e.target.style.borderColor = '#d1d5db';
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  fontSize: '15px',
+                  backgroundColor: '#e5e7eb',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  transition: 'all 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#f9fafb';
+                  e.target.style.borderColor = '#3b82f6';
+                }}
+                onBlur={(e) => {
+                  e.target.style.backgroundColor = '#e5e7eb';
+                  e.target.style.borderColor = '#d1d5db';
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: '24px' }}>
+              <input
+                type="password"
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  fontSize: '15px',
+                  backgroundColor: '#e5e7eb',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  transition: 'all 0.2s'
+                }}
+                onFocus={(e) => {
+                  e.target.style.backgroundColor = '#f9fafb';
+                  e.target.style.borderColor = '#3b82f6';
+                }}
+                onBlur={(e) => {
+                  e.target.style.backgroundColor = '#e5e7eb';
+                  e.target.style.borderColor = '#d1d5db';
+                }}
+              />
+            </div>
+
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <button
+                type="submit"
+                style={{
+                  padding: '12px 40px',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  color: 'white',
+                  backgroundColor: '#14b8a6',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(20, 184, 166, 0.3)',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#0d9488';
+                  e.target.style.transform = 'translateY(-1px)';
+                  e.target.style.boxShadow = '0 4px 12px rgba(20, 184, 166, 0.4)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#14b8a6';
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 2px 8px rgba(20, 184, 166, 0.3)';
+                }}
+              >
+                CREATE ACCOUNT
+              </button>
+            </div>
+
+            <div style={{ textAlign: 'center', fontSize: '14px' }}>
+              <Link
+                to="/login"
+                style={{
+                  color: '#2563eb',
+                  textDecoration: 'none',
+                  fontWeight: '500'
+                }}
+                onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+              >
+                Already have an account? Login
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

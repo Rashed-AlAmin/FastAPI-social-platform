@@ -25,25 +25,59 @@ export default function CreatePostForm({ onPostCreated }) {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md mb-6 border border-gray-100">
+    <div style={{
+      background: 'white',
+      padding: '20px',
+      borderRadius: '12px',
+      marginBottom: '24px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+    }}>
       <form onSubmit={handleSubmit}>
         <textarea
-          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition"
-          rows="3"
           placeholder="What's on your mind? 💭"
           value={body}
           onChange={(e) => setBody(e.target.value)}
           disabled={loading}
+          style={{
+            width: '100%',
+            minHeight: '80px',
+            padding: '12px 16px',
+            fontSize: '15px',
+            border: '2px solid #e5e7eb',
+            borderRadius: '8px',
+            resize: 'none',
+            outline: 'none',
+            fontFamily: 'inherit',
+            boxSizing: 'border-box',
+            transition: 'border-color 0.2s'
+          }}
+          onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+          onBlur={(e) => e.target.style.borderColor = '#e5e7eb'}
         />
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-        <div className="mt-4 flex justify-between items-center">
-          <p className="text-sm text-gray-500">
+        {error && <p style={{ color: '#ef4444', fontSize: '13px', margin: '8px 0 0 0' }}>{error}</p>}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: '12px'
+        }}>
+          <span style={{ fontSize: '13px', color: '#9ca3af' }}>
             {body.length > 0 && `${body.length} characters`}
-          </p>
+          </span>
           <button
             type="submit"
             disabled={loading || !body.trim()}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-2.5 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition shadow-md hover:shadow-lg"
+            style={{
+              padding: '10px 24px',
+              fontSize: '14px',
+              fontWeight: '600',
+              color: 'white',
+              background: loading || !body.trim() ? '#9ca3af' : '#3b82f6',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: loading || !body.trim() ? 'not-allowed' : 'pointer',
+              transition: 'all 0.2s'
+            }}
           >
             {loading ? 'Posting...' : '✨ Post'}
           </button>
