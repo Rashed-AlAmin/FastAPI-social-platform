@@ -27,7 +27,10 @@ app = FastAPI(lifespan=lifespan)
 app.add_middleware(CorrelationIdMiddleware)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React dev server
+    allow_origins=[
+        "http://localhost:5173",
+        "https://*.vercel.app",  # Allow all Vercel deployments
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
