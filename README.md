@@ -104,10 +104,10 @@ Frontend will run on `http://localhost:5173`
 ## 📸 Screenshots
 
 ### Home Feed
-![Feed](screenshots/feed.png)
+![Feed](screenshots/feed.PNG)
 
 ### Post Details & Comments
-![Comments](screenshots/comments.png)
+![Comments](screenshots/comments.PNG)
 
 ## 🔑 API Endpoints
 
