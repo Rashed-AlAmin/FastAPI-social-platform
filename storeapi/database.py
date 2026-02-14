@@ -1,6 +1,5 @@
 import databases
 import sqlalchemy
-from datetime import datetime
 from storeapi.config import config
 
 metadata = sqlalchemy.MetaData()
